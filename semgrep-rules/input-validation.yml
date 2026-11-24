@@ -1,0 +1,10 @@
+rules:
+  - id: direct-request-body-in-create
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    message: >
+      Validate and allowlist request fields
+      before creating a database record.
+    pattern: $MODEL.create(req.body)
