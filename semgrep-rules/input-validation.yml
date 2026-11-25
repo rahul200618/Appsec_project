@@ -1,10 +1,13 @@
 rules:
   - id: direct-request-body-in-create
-    languages:
-      - javascript
-      - typescript
+    languages: [javascript, typescript]
     severity: WARNING
     message: >
-      Validate and allowlist request fields
-      before creating a database record.
-    pattern: $MODEL.create(req.body)
+      Validate and allowlist request fields before creating or updating a database record.
+    metadata:
+      cwe: "CWE-915: Improperly Controlled Modification of Dynamically-Determined Object Attributes"
+      owasp: "A04:2021 - Insecure Design"
+    pattern-either:
+      - pattern: $MODEL.create(req.body)
+      - pattern: $MODEL.findByIdAndUpdate($ID, req.body, ...)
+      - pattern: $MODEL.findOneAndUpdate($FILTER, req.body, ...)

@@ -1,0 +1,11 @@
+rules:
+  - id: express-verbose-stack-trace-leak
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    message: >
+      Verbose error disclosure: avoid returning error.stack in HTTP responses to prevent leaking internal server architecture.
+    pattern-either:
+      - pattern: '$RES.status(...).json({..., stack: $ERR.stack, ...})'
+      - pattern: '$RES.json({..., stack: $ERR.stack, ...})'

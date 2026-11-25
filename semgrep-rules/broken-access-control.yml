@@ -1,0 +1,12 @@
+rules:
+  - id: missing-ownership-check-by-id
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    message: >
+      Database operation performed directly by ID without verifying record ownership (createdBy). Enforce ownership checks to prevent Insecure Direct Object References (IDOR/BOLA).
+    pattern-either:
+      - pattern: $MODEL.findById(req.params.id)
+      - pattern: $MODEL.findByIdAndUpdate(req.params.id, ...)
+      - pattern: $MODEL.findByIdAndDelete(req.params.id)

@@ -1,0 +1,105 @@
+                    
+                    
+┌──────────────────┐
+│ 14 Code Findings │
+└──────────────────┘
+                              
+    backend\middleware\auth.js
+   ❯❯❱ semgrep-rules.hardcoded-fallback-jwt-secret
+          ❰❰ Blocking ❱❱
+          Hardcoded fallback secret detected. Never supply a hardcoded string as a fallback for authentication
+          secrets.                                                                                            
+                                                                                                              
+            5┆ const jwtSecret = process.env.JWT_SECRET || "FAKE_CLASSROOM_SECRET";
+                          
+    backend\routes\auth.js
+    ❯❱ semgrep-rules.express-verbose-stack-trace-leak
+          ❰❰ Blocking ❱❱
+          Verbose error disclosure: avoid returning error.stack in HTTP responses to prevent leaking internal
+          server architecture.                                                                               
+                                                                                                             
+           25┆ res.status(500).json({ error: error.message, stack: error.stack });
+            ⋮┆----------------------------------------
+           41┆ res.status(500).json({ error: error.message, stack: error.stack });
+                              
+    backend\routes\expenses.js
+    ❯❱ semgrep-rules.direct-request-body-in-create
+          ❰❰ Blocking ❱❱
+          Validate and allowlist request fields before creating or updating a database record.
+                                                                                              
+           13┆ const expense = await Expense.create(req.body);
+   
+    ❯❱ semgrep-rules.express-verbose-stack-trace-leak
+          ❰❰ Blocking ❱❱
+          Verbose error disclosure: avoid returning error.stack in HTTP responses to prevent leaking internal
+          server architecture.                                                                               
+                                                                                                             
+           16┆ res.status(500).json({ error: error.message, stack: error.stack });
+            ⋮┆----------------------------------------
+           26┆ res.status(500).json({ error: error.message, stack: error.stack });
+   
+    ❯❱ semgrep-rules.missing-ownership-check-by-id
+          ❰❰ Blocking ❱❱
+          Database operation performed directly by ID without verifying record ownership (createdBy). Enforce
+          ownership checks to prevent Insecure Direct Object References (IDOR/BOLA).                         
+                                                                                                             
+           34┆ const expense = await Expense.findById(req.params.id);
+   
+    ❯❱ semgrep-rules.express-verbose-stack-trace-leak
+          ❰❰ Blocking ❱❱
+          Verbose error disclosure: avoid returning error.stack in HTTP responses to prevent leaking internal
+          server architecture.                                                                               
+                                                                                                             
+           38┆ res.status(500).json({ error: error.message, stack: error.stack });
+   
+    ❯❱ semgrep-rules.direct-request-body-in-create
+          ❰❰ Blocking ❱❱
+          Validate and allowlist request fields before creating or updating a database record.
+                                                                                              
+           45┆ const expense = await Expense.findByIdAndUpdate(req.params.id, req.body, { new: true });
+   
+    ❯❱ semgrep-rules.missing-ownership-check-by-id
+          ❰❰ Blocking ❱❱
+          Database operation performed directly by ID without verifying record ownership (createdBy). Enforce
+          ownership checks to prevent Insecure Direct Object References (IDOR/BOLA).                         
+                                                                                                             
+           45┆ const expense = await Expense.findByIdAndUpdate(req.params.id, req.body, { new: true });
+   
+    ❯❱ semgrep-rules.express-verbose-stack-trace-leak
+          ❰❰ Blocking ❱❱
+          Verbose error disclosure: avoid returning error.stack in HTTP responses to prevent leaking internal
+          server architecture.                                                                               
+                                                                                                             
+           49┆ res.status(500).json({ error: error.message, stack: error.stack });
+   
+    ❯❱ semgrep-rules.missing-ownership-check-by-id
+          ❰❰ Blocking ❱❱
+          Database operation performed directly by ID without verifying record ownership (createdBy). Enforce
+          ownership checks to prevent Insecure Direct Object References (IDOR/BOLA).                         
+                                                                                                             
+           56┆ const expense = await Expense.findByIdAndDelete(req.params.id);
+   
+    ❯❱ semgrep-rules.express-verbose-stack-trace-leak
+          ❰❰ Blocking ❱❱
+          Verbose error disclosure: avoid returning error.stack in HTTP responses to prevent leaking internal
+          server architecture.                                                                               
+                                                                                                             
+           60┆ res.status(500).json({ error: error.message, stack: error.stack });
+                     
+    backend\server.js
+    ❯❱ semgrep-rules.express-missing-helmet
+          ❰❰ Blocking ❱❱
+          Express application initialized without Helmet middleware. Enable helmet() to protect against common
+          web vulnerabilities via security headers.                                                           
+                                                                                                              
+            8┆ const app = express();
+            9┆
+           10┆ // BASELINE (intentional): no helmet() -> Remediation 1 (security headers)
+           11┆ app.use(cors({ origin: "http://localhost:5173" }));
+           12┆ app.use(express.json());
+           13┆
+           14┆ app.get("/api/health", (req, res) => res.json({ status: "ok" }));
+           15┆ app.use("/api/auth", authRoutes);
+           16┆ app.use("/api/expenses", expenseRoutes);
+           17┆
+             [hid 8 additional lines, adjust with --max-lines-per-finding] 

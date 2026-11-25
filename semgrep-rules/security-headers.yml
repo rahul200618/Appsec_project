@@ -1,0 +1,25 @@
+rules:
+  - id: express-missing-helmet
+    languages:
+      - javascript
+      - typescript
+    severity: WARNING
+    message: >
+      Express application initialized without Helmet middleware. Enable helmet() to protect against common web vulnerabilities via security headers.
+    patterns:
+      - pattern: |
+          const $APP = express();
+          ...
+          connectDB()
+      - pattern-not: |
+          const $APP = express();
+          ...
+          $APP.use(helmet(...));
+          ...
+          connectDB()
+      - pattern-not: |
+          const $APP = express();
+          ...
+          $APP.use(helmet());
+          ...
+          connectDB()
