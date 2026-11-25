@@ -1,0 +1,51 @@
+env:
+  contexts:
+    - name: "Khata Application v2"
+      urls:
+        - "http://localhost:5000"
+        - "http://localhost:5173"
+  parameters:
+    failOnError: false
+    failOnWarning: false
+    progressToStdout: true
+
+jobs:
+  - type: passiveScan-config
+    parameters:
+      scanOnlyInScope: true
+      maxAlertsPerRule: 10
+
+  - type: requestor
+    requests:
+      - url: "http://localhost:5000/api/health"
+      - url: "http://localhost:5000/api/auth/login"
+      - url: "http://localhost:5000/api/auth/register"
+      - url: "http://localhost:5000/api/expenses"
+      - url: "http://localhost:5173/"
+      - url: "http://localhost:5173/login"
+      - url: "http://localhost:5173/register"
+
+  - type: spider
+    parameters:
+      context: "Khata Application v2"
+      url: "http://localhost:5173"
+      maxDuration: 1
+
+  - type: passiveScan-wait
+    parameters:
+      maxDuration: 1
+
+  - type: report
+    parameters:
+      template: "traditional-html"
+      reportDir: "C:\\Users\\asus\\OneDrive\\Documents\\Vs code\\Blockchain and cybersecurity\\Security Foundations, AppSec and DevSecOps\\Appsec_project\\reports\\after"
+      reportFile: "zap-report"
+      reportTitle: "OWASP ZAP Remediated (v2) Security Report"
+      reportDescription: "Post-remediation DAST vulnerability scan of Khata v2.0"
+
+  - type: report
+    parameters:
+      template: "traditional-json"
+      reportDir: "C:\\Users\\asus\\OneDrive\\Documents\\Vs code\\Blockchain and cybersecurity\\Security Foundations, AppSec and DevSecOps\\Appsec_project\\reports\\after"
+      reportFile: "zap-report"
+      reportTitle: "OWASP ZAP Remediated (v2) Security Report"
