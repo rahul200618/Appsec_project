@@ -30,7 +30,8 @@ function Start-VersionServers($ver) {
     if ($ver -eq "version1") {
         $feCmd = "npm run dev"
         $beCmd = "npm start"
-    } else {
+    }
+    else {
         $feCmd = "npm run preview"
         $beCmd = "npm start"
     }
@@ -48,9 +49,9 @@ function Run-Semgrep($ver) {
     $reportDir = if ($ver -eq "version1") { "reports\before" } else { "reports\after" }
     Write-Host "`nRunning Semgrep on $ver..." -ForegroundColor Cyan
     Push-Location $Root
-    semgrep scan --config auto --config semgrep-rules/ --exclude node_modules --exclude dist --exclude build --exclude reports $ver
-    semgrep scan --config auto --config semgrep-rules/ --exclude node_modules --exclude dist --exclude build --exclude reports --json --output "$reportDir\semgrep.json" $ver | Out-Null
-    semgrep scan --config auto --config semgrep-rules/ --exclude node_modules --exclude dist --exclude build --exclude reports --text --output "$reportDir\semgrep.txt" $ver | Out-Null
+    semgrep scan --config auto --config semgrep-rules/ --exclude node_modules --exclude dist --exclude build --exclude reports --exclude ".env" --no-git-ignore $ver
+    semgrep scan --config auto --config semgrep-rules/ --exclude node_modules --exclude dist --exclude build --exclude reports --exclude ".env" --no-git-ignore --json --output "$reportDir\semgrep.json" $ver | Out-Null
+    semgrep scan --config auto --config semgrep-rules/ --exclude node_modules --exclude dist --exclude build --exclude reports --exclude ".env" --no-git-ignore --text --output "$reportDir\semgrep.txt" $ver | Out-Null
     Pop-Location
     Write-Host "Saved reports to $reportDir\semgrep.json and $reportDir\semgrep.txt" -ForegroundColor Green
 }
@@ -59,15 +60,9 @@ function Run-TruffleHog($ver) {
     $reportDir = if ($ver -eq "version1") { "reports\before" } else { "reports\after" }
     Write-Host "`nRunning TruffleHog on $ver..." -ForegroundColor Cyan
     Push-Location $Root
-    if ($ver -eq "version1") {
-        trufflehog filesystem version1\backend\config version1\backend\middleware version1\backend\models version1\backend\routes version1\backend\server.js version1\backend\.env version1\frontend\src --no-verification
-        trufflehog filesystem version1\backend\config version1\backend\middleware version1\backend\models version1\backend\routes version1\backend\server.js version1\backend\.env version1\frontend\src --no-verification --json > "$reportDir\trufflehog.json"
-        trufflehog filesystem version1\backend\config version1\backend\middleware version1\backend\models version1\backend\routes version1\backend\server.js version1\backend\.env version1\frontend\src --no-verification > "$reportDir\trufflehog.txt" 2>&1
-    } else {
-        trufflehog filesystem version2 --exclude-paths=.trufflehog-ignore --no-verification
-        trufflehog filesystem version2 --exclude-paths=.trufflehog-ignore --no-verification --json > "$reportDir\trufflehog.json"
-        trufflehog filesystem version2 --exclude-paths=.trufflehog-ignore --no-verification > "$reportDir\trufflehog.txt" 2>&1
-    }
+    trufflehog filesystem $ver --exclude-paths=.trufflehog-ignore --config=trufflehog-rules\jwt-fallback-secret.yml --no-verification
+    trufflehog filesystem $ver --exclude-paths=.trufflehog-ignore --config=trufflehog-rules\jwt-fallback-secret.yml --no-verification --json > "$reportDir\trufflehog.json"
+    trufflehog filesystem $ver --exclude-paths=.trufflehog-ignore --config=trufflehog-rules\jwt-fallback-secret.yml --no-verification > "$reportDir\trufflehog.txt" 2>&1
     Pop-Location
     Write-Host "Saved reports to $reportDir\trufflehog.json and $reportDir\trufflehog.txt" -ForegroundColor Green
 }
