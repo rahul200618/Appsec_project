@@ -247,22 +247,20 @@ export default function Landing() {
                   <button
                     type="button"
                     onClick={() => setHeroMode("ledger")}
-                    className={`rounded-md px-2.5 py-1 transition-colors cursor-pointer ${
-                      heroMode === "ledger"
-                        ? "bg-amber-500 text-slate-950"
-                        : "text-slate-300 hover:text-white"
-                    }`}
+                    className={`rounded-md px-2.5 py-1 transition-colors cursor-pointer ${heroMode === "ledger"
+                      ? "bg-amber-500 text-slate-950"
+                      : "text-slate-300 hover:text-white"
+                      }`}
                   >
                     Ledger
                   </button>
                   <button
                     type="button"
                     onClick={() => setHeroMode("shield")}
-                    className={`rounded-md px-2.5 py-1 transition-colors cursor-pointer ${
-                      heroMode === "shield"
-                        ? "bg-teal-500 text-slate-950"
-                        : "text-slate-300 hover:text-white"
-                    }`}
+                    className={`rounded-md px-2.5 py-1 transition-colors cursor-pointer ${heroMode === "shield"
+                      ? "bg-teal-500 text-slate-950"
+                      : "text-slate-300 hover:text-white"
+                      }`}
                   >
                     Security
                   </button>
@@ -465,11 +463,10 @@ export default function Landing() {
                 <button
                   type="button"
                   onClick={() => setInjectAdminField((v) => !v)}
-                  className={`rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
-                    injectAdminField
-                      ? "border-amber-400/50 bg-amber-500/20 text-amber-200"
-                      : "border-white/15 bg-white/5 text-slate-300"
-                  }`}
+                  className={`rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${injectAdminField
+                    ? "border-amber-400/50 bg-amber-500/20 text-amber-200"
+                    : "border-white/15 bg-white/5 text-slate-300"
+                    }`}
                 >
                   {injectAdminField ? "Simulated Attack Payload: ON" : "Simulated Attack Payload: OFF"}
                 </button>
@@ -484,18 +481,18 @@ export default function Landing() {
                     Incoming Request Body
                   </p>
                   <pre className="mt-2 overflow-x-auto font-mono text-xs leading-relaxed text-slate-300">
-{JSON.stringify(
-  {
-    title: draft.title.trim() || "Team Lunch",
-    amount: Number(draft.amount) || 740,
-    category: draft.category,
-    ...(injectAdminField
-      ? { createdBy: "victim_user_id", isAdmin: true }
-      : {}),
-  },
-  null,
-  2
-)}
+                    {JSON.stringify(
+                      {
+                        title: draft.title.trim() || "Team Lunch",
+                        amount: Number(draft.amount) || 740,
+                        category: draft.category,
+                        ...(injectAdminField
+                          ? { createdBy: "victim_user_id", isAdmin: true }
+                          : {}),
+                      },
+                      null,
+                      2
+                    )}
                   </pre>
                 </div>
 
@@ -504,16 +501,16 @@ export default function Landing() {
                     Saved in Version 2 DB
                   </p>
                   <pre className="mt-2 overflow-x-auto font-mono text-xs leading-relaxed text-teal-100">
-{JSON.stringify(
-  {
-    title: draft.title.trim() || "Team Lunch",
-    amount: Number(draft.amount) || 740,
-    category: draft.category,
-    createdBy: "req.user.id (JWT)",
-  },
-  null,
-  2
-)}
+                    {JSON.stringify(
+                      {
+                        title: draft.title.trim() || "Team Lunch",
+                        amount: Number(draft.amount) || 740,
+                        category: draft.category,
+                        createdBy: "req.user.id (JWT)",
+                      },
+                      null,
+                      2
+                    )}
                   </pre>
                 </div>
               </div>

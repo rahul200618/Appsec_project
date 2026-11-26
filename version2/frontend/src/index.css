@@ -35,15 +35,36 @@ body {
 }
 
 /* 3D Perspective & Depth Utilities */
-.perspective-1200 { perspective: 1200px; }
-.preserve-3d { transform-style: preserve-3d; }
-.translate-z-6 { transform: translateZ(24px); }
-.translate-z-12 { transform: translateZ(48px); }
-.translate-z-16 { transform: translateZ(64px); }
+.perspective-1200 {
+  perspective: 1200px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.translate-z-6 {
+  transform: translateZ(24px);
+}
+
+.translate-z-12 {
+  transform: translateZ(48px);
+}
+
+.translate-z-16 {
+  transform: translateZ(64px);
+}
 
 @keyframes floatSlow {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .animate-float-slow {
